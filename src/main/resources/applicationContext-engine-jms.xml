@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:amq="http://activemq.apache.org/schema/core" xmlns:jms="http://www.springframework.org/schema/jms"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd
+	http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-3.0.xsd
+	http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core-5.5.0.xsd">
+
+	<!-- ActiveMQ ConnectionFactory -->
+	<bean id="jmsConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory"
+		destroy-method="stop" depends-on="startupEngine">
+		<property name="connectionFactory">
+			<bean class="org.apache.activemq.ActiveMQConnectionFactory">
+				<property name="brokerURL" value="failover:(tcp://172.16.214.12:61668)?timeout=500" />
+				<property name="userName" value="252" />
+				<property name="password" value="YWRtaW47NDc4MDJlM2FhYmY3ZWY2OTFmNWNmMmM3ODBmZTU2YmY" />
+				<property name="useAsyncSend" value="true" />
+			</bean>
+		</property>
+	</bean>
+
+
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="jmsConnectionFactory" />
+	</bean>
+
+
+	<amq:queue name="mailQueue" physicalName="com.telenavsoftware.queue.mail" />
+	<amq:queue name="batchMailQueue" physicalName="com.telenavsoftware.queue.batchMail" />
+	<amq:queue name="logQueue" physicalName="com.telenavsoftware.queue.log" />
+	<amq:queue name="pushQueue" physicalName="com.telenavsoftware.queue.push" />
+	<amq:queue name="batchPushQueue" physicalName="com.telenavsoftware.queue.batchPush" />
+	<amq:queue name="smsQueue" physicalName="com.telenavsoftware.queue.sms" />
+	<amq:queue name="batchSmsQueue" physicalName="com.telenavsoftware.queue.batchSms" />
+	<amq:queue name="sinaQueue" physicalName="com.telenavsoftware.queue.sina" />
+	<amq:queue name="tencentQueue" physicalName="com.telenavsoftware.queue.tencent" />
+	<amq:queue name="renrenQueue" physicalName="com.telenavsoftware.queue.renren" />
+	<amq:queue name="qqQueue" physicalName="com.telenavsoftware.queue.qq" />
+	<amq:queue name="activityQueue" physicalName="com.telenavsoftware.queue.activity" />
+	<amq:queue name="roomRoundQueue" physicalName="com.telenavsoftware.queue.roomRound" />
+	<amq:queue name="groupChatRecordQueue" physicalName="com.telenavsoftware.queue.groupChatRecord" />
+</beans>
